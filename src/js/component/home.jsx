@@ -1,44 +1,50 @@
 import React,{useState} from "react";
 
 
-//create your first component
 const Home = () => {
-	const [tareas,setTareas] = useState(["hacerTarea", "otra tarea"])
-	const [nuevaTarea, setNuevaTarea] = useState([""]);
+	//
+	const [nuevaTarea, setNuevatarea] = useState("")
+	const [tareas, setTareas] = useState(["make the bed","wash my hands"])
 
-
-	const handleTAREAnUEVA = (event) =>{
-		setTareanueva(event.target.value)
+	//
+	const actualizarValorNuevaTarea = (event) => {
+		setNuevatarea(event.target.value)
 	}
-	
 
-	const handleSubmit = (event) => {
+	const adicionarNuevatarea = (event) => {
 		event.preventDefault()
-		setTareas
-		}
-	
+		setTareas([...tareas, nuevaTarea])
+		setNuevatarea("")
+	}
+
+
+	const borrarElementos = (index) => {
+		const arrayModificado = tareas.filter((item, i) =>i !== index)
+		setTareas(arrayModificado)
+	}
+
 	return (
+		<div className="w-50 m-auto mt-5">
+			<form onSubmit={adicionarNuevatarea}>
+				<div className="mb-3">
+					<input className="form-control" id="exampleInputEmail" aria-describedby="emailHelp" value={nuevaTarea} onChange={actualizarValorNuevaTarea} />
+				</div>
+			</form>
+			<ul>
+				{
+					tareas.map((item,index) =>{
+						return(<li key={index}>{item} <button className="btn btn-primary" onClick={() => borrarElementos(index)}>x</button> </li>)
+					})
+				}
+			</ul>
 
-	<div className="w-50 m-auto mt-5">
-		<form onSubmit = {handleTareas} >
-			<div className="mb-3">
-				<label for="exampleInputEmail1" className="form-label">Tarea</label>
-				<input onChange={handleTareas} type="text" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"/>
-				<div id="tasklHelp" className="form-text">pon la tarea.</div>
-			</div>
-			<button type="submit" className="btn btn-primary">Submit</button>
-			
-		</form>
+			{tareas.lenght === 0 ? <span></span> : <div>{tareas.lenght}</div>}
+		</div>
+	)
+}
 
-		<ul className=" w-50 m-auto">
-			{tareas.map((item,index) => (
-				<li key={index}>{item} 
-				<button onClick={ ()=> handleDelete(index)} type></button>
-				</li>
-			))}
-		</ul>
-	</div>
-	);
-};
+
+
+
 
 export default Home;
